@@ -1,7 +1,6 @@
 import re
 def razbor(stroka):
-    return re.findall(r'\d+\.?\d*|[a-zA-Z]+|[()+\-*/>,]', stroka)
-
+    return re.findall(r'\d+\.?\d*|[a-zA-Z]+|[()+\-*/>,;]', stroka)
 
 def slozhenie(spisok):
     global i
@@ -53,6 +52,8 @@ def chast(spisok):
     if znak == '(':
         i += 1
         chislo = sravnenie(spisok)
+        if i >= len(spisok) or spisok[i] != ')':
+            raise ValueError('Незакрытая скобка')
         i += 1
         return chislo
 
@@ -60,7 +61,7 @@ def chast(spisok):
         i += 2
         chisla = [slozhenie(spisok)]
 
-        while i < len(spisok) and spisok[i] == ',':
+        while i < len(spisok) and (spisok[i] == ',' or spisok[i] == ';'):
             i += 1
             chisla.append(slozhenie(spisok))
 
@@ -77,20 +78,20 @@ def sravnenie(spisok):
 
     if i < len(spisok) and spisok[i] == '>':
         i += 1
-        vtoroe = slozhenie(spisok)
-        return chislo > vtoroe
+        sec = slozhenie(spisok)
+        return chislo > sec
 
     return chislo
 
 stroka = ''
-print('Для выхода из приложения введите "exit"')
-while stroka != 'exit':
+
+print('Для выхода введите "exit"')
+while stroka != 'exit' or stroka != 'EXIT':
     stroka = input("Введите выражение: ")
-    if stroka == 'exit':
+    if stroka == 'exit' or stroka == 'EXIT':
         break
     spisok = razbor(stroka)
     i = 0
-
     try:
         print("Результат:", sravnenie(spisok))
     except:
