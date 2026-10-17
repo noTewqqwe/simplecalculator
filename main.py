@@ -83,10 +83,8 @@ def sravnenie(spisok):
 
     return chislo
 
-stroka = ''
-
 print('Для выхода введите "exit"')
-while stroka != 'exit' or stroka != 'EXIT':
+while True:
     stroka = input("Введите выражение: ")
     if stroka == 'exit' or stroka == 'EXIT':
         break
